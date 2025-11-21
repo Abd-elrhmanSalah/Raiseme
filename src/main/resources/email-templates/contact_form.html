@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        .header { background-color: #f5f5f5; padding: 20px; text-align: center; }
+        .content { padding: 20px; }
+        .info-item { margin-bottom: 10px; }
+        .label { font-weight: bold; }
+        .message-box { background-color: #f9f9f9; padding: 15px; margin-top: 20px; border-left: 4px solid #4CAF50; }
+        .footer { font-size: 12px; color: #666; margin-top: 30px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>New Contact Form Submission</h2>
+    </div>
+    <div class="content">
+        <div class="info-item"><span class="label">Name:</span> {{var:name}}</div>
+        <div class="info-item"><span class="label">Email:</span> {{var:email}}</div>
+        <div class="info-item"><span class="label">Phone:</span> {{var:phone}}</div>
+        <div class="info-item"><span class="label">Company:</span> {{var:company}}</div>
+        <div class="info-item"><span class="label">Position:</span> {{var:position}}</div>
+        <div class="message-box">
+            <div class="label">Message:</div>
+            <p>{{var:message}}</p>
+        </div>
+    </div>
+    <div class="footer">
+        <p>This message was submitted through the website contact form.</p>
+    </div>
+</div>
+</body>
+</html>

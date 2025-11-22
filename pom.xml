@@ -11,8 +11,8 @@
     <groupId>com.eprogs</groupId>
     <artifactId>Raiseme</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ecommerce</name>
-    <description>Ecommerce project for Spring Boot</description>
+    <name>raiseme</name>
+    <description>Raiseme project for Spring Boot</description>
     <url/>
     <licenses>
         <license/>

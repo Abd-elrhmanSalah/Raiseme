@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -164,6 +165,36 @@ public class AuthenticationController {
     public ResponseEntity<?> getUserData(@PathVariable Long userId) {
 
         return new ResponseEntity<>(authenticateService.getUserDataById(userId), HttpStatus.OK);
+
+    }
+
+    @Operation(summary = "Lock an user", description = "API to lock an user by email.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User successfully locked."),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    @PatchMapping("/lock")
+    public ResponseEntity<?> lockUserByEmail(@RequestParam @Parameter(description = "email") String email) {
+
+        authenticateService.lockUserByEmail(email);
+        return new ResponseEntity<>(new BaseResponse<>(HttpStatus.OK.value(), MessagesEnum.UPDATED.getMessageEN(),
+                MessagesEnum.UPDATED.getMessageAR(), HttpStatus.OK.getReasonPhrase()),
+                HttpStatus.OK);
+
+    }
+
+    @Operation(summary = "unLock an user", description = "API to unLockan user by email.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "User successfully unLocked."),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
+    })
+    @PatchMapping("/unLock")
+    public ResponseEntity<?> unLockUserByEmail(@RequestParam @Parameter(description = "email") String email) {
+
+        authenticateService.unLockUserByEmail(email);
+        return new ResponseEntity<>(new BaseResponse<>(HttpStatus.OK.value(), MessagesEnum.UPDATED.getMessageEN(),
+                MessagesEnum.UPDATED.getMessageAR(), HttpStatus.OK.getReasonPhrase()),
+                HttpStatus.OK);
 
     }
 }

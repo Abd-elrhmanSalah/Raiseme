@@ -40,5 +40,4 @@ public class Item extends BaseEntity<Long> implements Serializable {
     @JoinColumn(name = "CATEGORY_ID", nullable = false)
     private Category category;
 
-
 }

@@ -28,9 +28,7 @@ public class UserDTO implements Serializable {
     private Long lastModifiedBy;
     private Date createdDate;
     private Date lastModifiedDate;
-    @Transient
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Boolean isNewUser;
+
     @Transient
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Boolean isActivateAgain;

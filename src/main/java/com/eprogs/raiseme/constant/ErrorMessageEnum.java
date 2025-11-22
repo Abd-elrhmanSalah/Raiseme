@@ -16,6 +16,7 @@ public enum ErrorMessageEnum {
     ERROR_AUTHENTICATION_FAILED("ERROR_AUTHENTICATION_FAILED", "Username or password not correct", "اسم المستخدم او الرقم السرى غير صحيح"),
     ERROR_UNAUTHORIZED("ERROR_UNAUTHORIZED", "You are not authorized to do this action", "انت غير مصرح لك بالقيام بهذا الاجراء"),
     ERROR_EMAIL_ALREADY_EXIST("EMAIL_ALREADY_EXIST", "Email already exist", "هذا الايميل موجود بالفعل"),
+    ERROR_CATEGORY_TITLE_EXIST("CATEGORY TITLE EXIST", "Category title exist", "هذا الصنف موجود بالفعل"),
     ERROR_ITEM_NOT_FOUND("Record Not Found", "Record Not Found", "هذا السجل غير موجود"),
     ERROR_UPLOAD_FILE("ERROR_UPLOAD_FILE", "Something wrong in uploading file", "يوجد مشكلة فى رفع الملف"),
     ERROR_FILE_NOT_FOUND("ERROR_FILE_NOT_FOUND", "No file with this name", "لا يوجد ملف بهذا الاسم"),

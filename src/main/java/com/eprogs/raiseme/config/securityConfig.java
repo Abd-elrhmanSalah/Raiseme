@@ -49,9 +49,14 @@ public class securityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/static/**").permitAll() // Allow access to static resources
-                        .requestMatchers("/v1/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/** ", "/v1/authentication/changePassword", "/v1/authentication/login", "/health_check")
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/webjars/** ",
+                                "/v1/authentication/changePassword", "/v1/authentication/login", "/v1/authentication/register",
+                                "/v1/authentication/verifyOTP", "/health_check")
                         .permitAll()
+                        .anyRequest().authenticated()
                 );
+
+
         http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
         http.exceptionHandling(ehc -> {
             ehc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint());

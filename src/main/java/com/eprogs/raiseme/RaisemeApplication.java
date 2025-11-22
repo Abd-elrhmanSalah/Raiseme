@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-@OpenAPIDefinition(info = @Info(title = "Ecommerce System REST API Documentation",
-        description = "Ecommerce System REST API Documentation that is using for test apis",
+@OpenAPIDefinition(info = @Info(title = "Raiseme System REST API Documentation",
+        description = "Raiseme System REST API Documentation that is using for test apis",
         version = "v1")
 )
 public class RaisemeApplication {

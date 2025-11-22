@@ -22,7 +22,7 @@ public class PreparingEmailService {
     private final EmailService emailService;
 
     public void prepareAndSendEmail(UserDTO userDTO) {
-        if (userDTO.getIsOTPSent() != null && userDTO.getIsOTPSent() && userDTO.getIsNewUser()) {
+        if (userDTO.getIsOTPSent() != null && userDTO.getIsOTPSent()) {
             prepareOTPAndSendEmail(userDTO);
 
         } else if (userDTO.getIsChangingPassword()) {
@@ -33,8 +33,8 @@ public class PreparingEmailService {
             prepareChangeEmailDataAndSendEmail(userDTO);
         else if (userDTO.getIsActivateAgain())
             prepareActivateAccountDataAndSendEmail(userDTO);
-        else
-            prepareDeactivateAccountDataAndSendEmail(userDTO);
+//        else
+//            prepareDeactivateAccountDataAndSendEmail(userDTO);
 
     }
 

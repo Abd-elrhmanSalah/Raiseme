@@ -37,10 +37,6 @@ public class UserService implements UserDetailsService {
             throw new ApplicationException(new ErrorResponseDTO(HttpStatus.BAD_REQUEST,
                     ERROR_USER_LOCKED.getMessageEN(), ERROR_USER_LOCKED.getMessageAR(), LocalDateTime.now()));
 
-//        if (systemUser.isFirstLogin())
-//            throw new ApplicationException(new ErrorResponseDTO(HttpStatus.BAD_REQUEST,
-//                    ERROR_USER_NOT_ACTIVE.getMessageEN(), ERROR_USER_NOT_ACTIVE.getMessageAR(), LocalDateTime.now()));
-
         return new SystemUserDetails(systemUser);
     }
 
@@ -85,7 +81,6 @@ public class UserService implements UserDetailsService {
     }
 
     public void lockUser(String email, Boolean isLocked) {
-        email = email.toLowerCase();
         SystemUser user = findByEmail(email);
         user.setIsLocked(isLocked);
         userRepository.save(user);
@@ -120,7 +115,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public void loginOutAndRemoveToken(String email) {
+    public void logOutAndRemoveToken(String email) {
         email = email.toLowerCase();
         SystemUser user = findByEmail(email);
         user.setToken(null);

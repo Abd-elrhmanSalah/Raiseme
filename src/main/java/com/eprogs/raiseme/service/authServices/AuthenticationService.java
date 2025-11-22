@@ -22,9 +22,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,7 +42,7 @@ import static com.eprogs.raiseme.constant.ErrorMessageEnum.ERROR_UNAUTHORIZED;
 import static com.eprogs.raiseme.constant.ErrorMessageEnum.ERROR_WRONG_OTP;
 
 @Service
-@RequiredArgsConstructor(onConstructor_ = {@Lazy})
+@RequiredArgsConstructor
 @Slf4j
 public class AuthenticationService {
 
@@ -92,7 +92,7 @@ public class AuthenticationService {
 
             return tokenPart(systemUserDetails);
         }
-        return null;
+        throw new InternalAuthenticationServiceException("");
     }
 
     public void restPassword(String email) {
@@ -108,7 +108,7 @@ public class AuthenticationService {
         user.setIsLocked(false);
 
         userService.saveUser(user);
-        userService.loginOutAndRemoveToken(user.getEmail());
+        userService.logOutAndRemoveToken(user.getEmail());
 
 
         UserDTO userDTO = UserDTO.builder()
@@ -155,7 +155,7 @@ public class AuthenticationService {
                 throw new ApplicationException(new ErrorResponseDTO(HttpStatus.UNAUTHORIZED,
                         ERROR_UNAUTHORIZED.getMessageEN(), ERROR_UNAUTHORIZED.getMessageAR(), LocalDateTime.now()));
 
-            userService.loginOutAndRemoveToken(currentUser.getUsername());
+            userService.logOutAndRemoveToken(currentUser.getUsername());
 
             SecurityContextHolder.clearContext();
         }
@@ -182,7 +182,6 @@ public class AuthenticationService {
                 .isActivateAgain(Boolean.FALSE)
                 .isChangingPassword(Boolean.FALSE)
                 .isOTPSent(Boolean.TRUE)
-                .isNewUser(Boolean.TRUE)
                 .otp(otp)
                 .build();
 
@@ -243,4 +242,11 @@ public class AuthenticationService {
                 .build();
     }
 
+    public void lockUserByEmail(String email) {
+        userService.lockUser(email, Boolean.TRUE);
+    }
+
+    public void unLockUserByEmail(String email) {
+        userService.lockUser(email, Boolean.FALSE);
+    }
 }

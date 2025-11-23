@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -92,7 +93,7 @@ public class AuthenticationService {
 
             return tokenPart(systemUserDetails);
         }
-        throw new InternalAuthenticationServiceException("");
+        throw new BadCredentialsException("");
     }
 
     public void restPassword(String email) {

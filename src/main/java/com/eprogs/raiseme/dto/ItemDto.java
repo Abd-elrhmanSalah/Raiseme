@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class ItemResponseDto {
+public class ItemDto {
+
     private Long id;
     private String title;
     private String description;
     private double price;
     private String imagePath;
-    private boolean booked;
     private Long categoryId;
 
 }

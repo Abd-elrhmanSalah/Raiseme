@@ -39,7 +39,7 @@ import static com.eprogs.raiseme.constant.MessagesEnum.UPDATED;
 @Slf4j
 public class CategoryController {
 
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @Operation(summary = "Create a new category", description = "API to create a new category in the system.")
     @ApiResponses({
@@ -47,12 +47,12 @@ public class CategoryController {
             @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<?> createCategory(@RequestBody CategoryRequestDto CategoryDto) {
         categoryService.createCategory(CategoryDto);
-        return new ResponseEntity<>(new BaseResponse<>(HttpStatus.OK.value(), CREATED.getMessageEN(),
-                CREATED.getMessageAR(), HttpStatus.OK.getReasonPhrase()),
-                HttpStatus.OK);
+        return new ResponseEntity<>(new BaseResponse<>(HttpStatus.CREATED.value(), CREATED.getMessageEN(),
+                CREATED.getMessageAR(), HttpStatus.CREATED.getReasonPhrase()),
+                HttpStatus.CREATED);
     }
 
     @Operation(summary = "Update category details", description = "API to update an existing category in the system.")
@@ -78,14 +78,14 @@ public class CategoryController {
     @PatchMapping("/{categoryId}")
     public ResponseEntity<?> deleteCategoryById(@PathVariable Long categoryId) {
 
-        categoryService.deleteCategory(categoryId);
+        categoryService.deleteCategoryById(categoryId);
         return new ResponseEntity<>(new BaseResponse<>(HttpStatus.OK.value(), DELETED.getMessageEN(),
                 DELETED.getMessageAR(), HttpStatus.OK.getReasonPhrase()),
                 HttpStatus.OK);
 
     }
 
-    @Operation(summary = "get category with item", description = "API to show categry with item in the system.")
+    @Operation(summary = "get category with item", description = "API to show category with item in the system.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = " successfully ."),
             @ApiResponse(responseCode = "500", description = "Internal Server Error", content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))

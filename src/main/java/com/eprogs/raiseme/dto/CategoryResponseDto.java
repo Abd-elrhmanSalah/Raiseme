@@ -12,8 +12,10 @@ import java.util.List;
 @Data
 @Builder
 public class CategoryResponseDto {
+
     private Long id;
     private String title;
-    private List<ItemResponseDto> items;
+    private List<ItemDto> items;
     private Boolean isLocked;
+
 }

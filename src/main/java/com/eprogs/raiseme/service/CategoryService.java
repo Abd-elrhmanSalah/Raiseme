@@ -45,12 +45,12 @@ public class CategoryService extends BaseService<Category, Long> {
     }
 
     @Transactional
-    public void deleteCategory(Long categoryId) {
+    public void deleteCategoryById(Long categoryId) {
         Category categoryExistById = isCategoryExistById(categoryId);
         categoryExistById.setIsLocked(true);
         categoryRepository.save(categoryExistById);
 
-        List<Item> allItemsById = itemRepository.findAllByCategory(categoryExistById);
+        List<Item> allItemsById = itemRepository.findAllByCategoryAndIsLockedFalse(categoryExistById);
         allItemsById.forEach(item -> {
             item.setIsLocked(false);
             itemRepository.save(item);
@@ -59,14 +59,17 @@ public class CategoryService extends BaseService<Category, Long> {
 
     public CategoryResponseDto getCategoryWithItems(Long categoryId) {
         isCategoryExistById(categoryId);
-        Optional<Category> category = categoryRepository.findByIdAndIsLockedFalse(categoryId);
+        Optional<Category> categoryOptional = categoryRepository.findByIdAndIsLockedFalse(categoryId);
 
-        if (category.isEmpty())
+        if (categoryOptional.isEmpty())
             throw new ApplicationException(new ErrorResponseDTO(HttpStatus.BAD_REQUEST,
                     ERROR_ITEM_NOT_FOUND.getMessageEN(), ERROR_ITEM_NOT_FOUND.getMessageAR(), LocalDateTime.now()));
 
-        return ObjectMapperUtils.map(category.get(),
-                CategoryResponseDto.class);
+        Category category = categoryOptional.get();
+        List<Item> itemList = itemRepository.findAllByCategoryAndIsLockedFalse(category);
+        category.setItems(itemList);
+
+        return ObjectMapperUtils.map(category, CategoryResponseDto.class);
     }
 
     public List<CategoryResponseDto> getAllCategories() {
@@ -81,7 +84,7 @@ public class CategoryService extends BaseService<Category, Long> {
         }
     }
 
-    private Category isCategoryExistById(Long categoryId) {
+    public Category isCategoryExistById(Long categoryId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new ApplicationException(new ErrorResponseDTO(
                     HttpStatus.BAD_REQUEST, ERROR_ITEM_NOT_FOUND.getMessageEN(),

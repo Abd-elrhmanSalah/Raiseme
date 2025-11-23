@@ -34,7 +34,12 @@ public class Item extends BaseEntity<Long> implements Serializable {
     private String imagePath;
 
     @Column(name = "IS_LOCKED", nullable = false)
+    @Builder.Default
     private Boolean isLocked = false;
+
+    @Column(name = "IS_BOOKED", nullable = false)
+    @Builder.Default
+    private Boolean isBooked = false;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CATEGORY_ID", nullable = false)

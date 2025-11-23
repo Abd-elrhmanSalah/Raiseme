@@ -157,7 +157,7 @@ public class AuthenticationController {
 
     @Operation(summary = "Get user by id RESTAPI", description = "get user data by id")
     @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "HTTP Status CREATED"),
+            @ApiResponse(responseCode = "200", description = "HTTP Status Successfully"),
             @ApiResponse(responseCode = "500", description = "HTTP Status Internal Server Error",
                     content = @Content(schema = @Schema(implementation = ErrorResponseDTO.class)))
     })

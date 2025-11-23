@@ -10,8 +10,10 @@ import com.eprogs.raiseme.utils.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.eprogs.raiseme.constant.ErrorMessageEnum.ERROR_ITEM_NOT_FOUND;
@@ -22,7 +24,7 @@ public class ItemService extends BaseService<Item, Long> {
 
     private final ItemRepository itemRepository;
     private final CategoryService categoryService;
-
+    private final FileStorageService fileStorageService;
 
     public ItemDto createItem(ItemDto itemDto) {
         Category categoryExistById = categoryService.isCategoryExistById(itemDto.getCategoryId());
@@ -82,5 +84,51 @@ public class ItemService extends BaseService<Item, Long> {
                     LocalDateTime.now()));
         }
         return itemRepository.findById(itemId).get();
+    }
+
+    /**************************************************************************************/
+    // Upload images and add to item
+    public ItemDto addImages(Long itemId, List<MultipartFile> images) {
+        Item item = isItemExistById(itemId);
+
+        List<String> paths = fileStorageService.uploadItemImages(itemId, images);
+
+        item.getImagePaths().addAll(paths);
+
+        return ObjectMapperUtils.map(itemRepository.save(item), ItemDto.class);
+    }
+
+    // Replace all images
+    public ItemDto replaceImages(Long itemId, List<MultipartFile> images) {
+        Item item = isItemExistById(itemId);
+
+        // delete old images
+        item.getImagePaths().forEach(fileStorageService::deleteImage);
+        item.setImagePaths(new ArrayList<>());
+
+        // save new images
+        List<String> paths = fileStorageService.uploadItemImages(itemId, images);
+        item.setImagePaths(paths);
+
+        return ObjectMapperUtils.map(itemRepository.save(item), ItemDto.class);
+    }
+
+    // Delete one image
+    public ItemDto deleteSingleImage(Long itemId, String imgPath) {
+        Item item = isItemExistById(itemId);
+
+        item.getImagePaths().remove(imgPath);
+        fileStorageService.deleteImage(imgPath);
+
+        return ObjectMapperUtils.map(itemRepository.save(item), ItemDto.class);
+    }
+
+    // Delete all images
+    public void deleteAllImages(Long itemId) {
+        fileStorageService.deleteAllItemImages(itemId);
+
+        Item item = isItemExistById(itemId);
+        item.setImagePaths(new ArrayList<>());
+        itemRepository.save(item);
     }
 }

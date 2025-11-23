@@ -25,7 +25,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.eprogs.raiseme.constant.MessagesEnum.CREATED;
 import static com.eprogs.raiseme.constant.MessagesEnum.DELETED;
@@ -172,5 +176,28 @@ public class ItemController {
         return ResponseEntity.ok(itemService.getItemsByPriceRange(minPrice, maxPrice));
     }
 
+    @PostMapping(value = "/{itemId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> uploadImages(@PathVariable Long itemId, @RequestPart("images") List<MultipartFile> images) {
+
+        return ResponseEntity.ok(itemService.addImages(itemId, images));
+
+    }
+
+    @PutMapping(value = "/{itemId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> replaceImages(@PathVariable Long itemId, @RequestPart("images") List<MultipartFile> images) {
+
+        return ResponseEntity.ok(itemService.replaceImages(itemId, images));
+    }
+
+    @DeleteMapping("/{itemId}/images")
+    public void deleteAll(@PathVariable Long itemId) {
+        itemService.deleteAllImages(itemId);
+    }
+
+    @DeleteMapping("/{itemId}/images/single")
+    public ResponseEntity<?> deleteOne(@PathVariable Long itemId, @RequestParam String path) {
+        return ResponseEntity.ok(itemService.deleteSingleImage(itemId, path));
+
+    }
 
 }

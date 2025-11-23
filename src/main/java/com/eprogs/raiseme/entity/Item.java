@@ -1,6 +1,7 @@
 package com.eprogs.raiseme.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -12,6 +13,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Item")
@@ -30,8 +33,8 @@ public class Item extends BaseEntity<Long> implements Serializable {
     @Column(name = "PRICE", nullable = false)
     private Double price;
 
-    @Column(name = "IMAGE_PATH", nullable = false, length = 600)
-    private String imagePath;
+    @ElementCollection
+    private List<String> imagePaths = new ArrayList<>();
 
     @Column(name = "IS_LOCKED", nullable = false)
     @Builder.Default
